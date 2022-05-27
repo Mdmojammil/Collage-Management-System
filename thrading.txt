@@ -1,0 +1,359 @@
+Multithreading in python
+
+
+Single tasking--->
+
+
+
+       program1 program2 program3------>CPU
+                                        program1---till its complete
+                                        -->problem---input/ouput---file/read/database--read/write
+                                       idle---xxxx
+                  wait     wait
+
+
+
+program1          program2        program3
+5min              5min             5min   //Multitaking(time sharing)
+                   
+              
+Memory Shared(xxxx)
+
+             timeSharing
+              (sushil patel) CPU
+
+
+
+Multi Process/MutiTasking  Machanism
+
+MultiTasking is allow to load more than one task in main memory and it able to 
+allow more than one process to execute
+
+*Process-based Multitasking (Multiprocessing)
+*it will reduce execution time(but in comparision to single process fast)
+
+*Heavy weight Context Switching
+ Switching from one process to another requires some time for saving and 
+ loading registers, memory maps, updating lists, etc.
+
+
+*improve performance
+*A process is heavyweight(separate memory area)
+*High Cost
+
+
+*Thread-based Multitasking (Multithreading)
+ Multithreading in python is a process of executing multiple threads simultaneously.
+
+Thread:
+* A thread is a lightweight subprocess, the smallest unit of processing.
+* It is a separate path of execution
+* It uses a shared memory area.
+* Threads are independent, so it doesn't affect other threads if an 
+  exception occurs in a single thread
+
+Single Thread Model:
+It Will allow one Thread  to execute application
+*sequential execution
+*more time
+*more cost
+*low performance
+
+
+Multi-threading = Multi-tasking + Sharing of Data + Inter-Thread Communication
+** ==> Server side programming(amazon----> login---subprocess===>sushil kumar patel
+                                  //search----display----> cookies(set)---->
+                                //next time----> show
+                                cart-----> payactiive-->
+
+** Gaming/animation----> sound+text+video(animation)
+
+Multi-Threading
+*Parallel Execution
+*Threads share the same address space.
+*A thread is lightweight.
+*Low Cost
+*light Weight Context Switching
+.*less time
+*improve performance
+
+
+
+ADVANTAGES OF THREADING
+
+Multithreaded programs can run faster on
+computer systems with multiple CPUs,because theses threads can be truly
+concurrent.
+• A program can remain responsive to input.
+  This is true both on single and on multiple
+  CPUs.
+• Allows to do something else while one
+  thread is waiting for an I/O task (disk,
+  network) to complete.
+• Some programs are easy to express using
+  concurrency which leads to elegant
+ solutions, easier to maintain and debug.
+• Threads of a process can share the memory
+  of global variables. If a global variable is
+  changed in one thread, this change is valid
+  for all threads. A thread can have local
+  variables.
+
+
+• Scheduling
+	• To execute a threaded program, must
+	  rapidly switch between threads.
+	• This can be done by the user process (userlevel threads).
+	• Can be done by the kernel (kernel-level
+	  threads).
+• Resource Sharing
+	• Since threads share memory and other
+	  resources, must be very careful.
+	• Operation performed in one thread could
+	  cause problems in another.
+• Synchronization
+	• Threads often need to coordinate
+	  actions.
+	• Can get "race conditions" (outcome
+	  dependent on order of thread execution)
+	• Often need to use locking primitives
+	  (mutual exclusion locks, semaphores,
+	etc...
+Way to create threads in python application
+
+1.Way1
+THREAD MODULE LOW LEVEL
+The thread module provides low-level access to threads
+• Thread creation.
+• Simple mutex locks.
+• Creating a new thread
+• thread.start_new_thread(func,[args [,kwargs]])
+• Executes a function in a new thread
+
+import thread
+import time
+def print_time(delay):
+	while 1:
+		time.sleep(delay)
+		print time.ctime(time.time())
+# Start the thread
+thread.start_new_thread(print_time,(5,))
+# Go do something else
+# statements
+while (1): pass
+
+2.way2
+THREADING — HIGHER-LEVEL
+THREADING INTERFACE
+
+• Python manages to get a lot done using so little.
+	• The Threading module uses the built in thread package to
+	  provide some very interesting features that would make
+          your programming a whole lot easier.
+	• There are in built mechanisms which provide critical section
+          locks, wait/notify locks etc.
+
+• Major Components of the Threading module are:
+	• Thread Object
+	• Lock object
+	• RLock object
+	• Semaphore Object
+	• Condition Object
+	• Event Object
+
+• It is a high-level threads module
+	• Implements threads as classes (similar to Java)
+	• Provides an assortment of synchronization and locking 	  primitives.
+	• Built using the low-level thread module.
+• Creating a new thread (as a class)
+	• Idea: Inherit from the "Thread" class and provide a few methods
+	import threading, time
+Example:
+class PrintTime(threading.Thread):
+	def _init_(self,interval):
+		threading.Thread._init_(self) # Required
+		self.interval = interval
+	def run(self):
+		while 1:
+			time.sleep(self.interval)
+			print time.ctime(time.time())
+			t = PrintTime(5) # Create a thread object
+			t.start() # Start it
+# Do something else
+while(1): pass
+
+Methods:
+Thread Module:
+threading.activeCount() − Returns the number of thread objects that are  active.
+
+threading.currentThread() − Returns the number of thread objects in the  caller's thread control.
+
+threading.enumerate() − Returns a list of all thread objects that are currently active.
+
+Threading module has the Thread class Methods:
+
+run() − The run() method is the entry point for a thread.
+
+start() − The start() method starts a thread by calling the run method.
+
+join([time]) − The join() waits for threads to terminate.
+
+isAlive() − The isAlive() method checks whether a thread is still executing.
+
+getName() − The getName() method returns the name of a thread.
+
+setName() − The setName() method sets the name of a thread.
+
+
+CLASS THREADING.THREAD METHODS
+
+• start()
+	• Start the thread’s activity.
+	• It must be called at most once per thread object.
+	• It arranges for the object’s run() method to be invoked in
+	  a separate thread of control.
+	• This method will raise a RuntimeError if called more than
+ 	  once on the same thread object.
+• run()
+	• Method representing the thread’s activity.
+	• You may override this method in a subclass. The standard
+	  run() method invokes the callable object passed to the
+	  object’s constructor as the target argument, if any, with
+	  sequential and keyword arguments taken from the args
+	  and kwargs arguments, respectively.
+
+• join([timeout])
+	• Wait until the thread terminates. This blocks the calling
+	  thread until the thread whose join() method is called
+          terminates – either normally or through an unhandled
+          exception – or until the optional timeout occurs.
+	• When the timeout argument is present and not None, it
+	  should be a floating point number specifying a timeout for
+          the operation in seconds (or fractions thereof).
+	• As join() always returns None, you must call isAlive()
+          after join() to decide whether a timeout happened – if
+          the thread is still alive, the join() call timed out.
+	• When the timeout argument is not present or None, the
+          operation will block until the thread terminates.
+
+THREAD STATES
+•---Create new state---->•Initial State•
+                            |
+			    start
+			    |                wait/sleep/IO started         
+			 •Runable State•(ready state)----•Block State•
+			    |
+			•  Stop•
+
+Initial State. 
+	After the creations of Thread instance the thread is
+	in this state but before the start() method invocation. At this	
+	point, the thread is considered not alive.
+• Runnable state. 
+	A thread starts its life from Runnable state. A
+	thread first enters runnable state after invoking the start()
+	method but a thread can return to this state after either
+	running, waiting, sleeping or coming back from blocked state
+        also. 
+	On this state a thread is waiting for a turn on the
+	processor.
+• Running state. 
+	The thread is currently executing. There are
+	several ways to enter in Runnable state but there is only one
+	way to enter in Running state: the scheduler select a thread
+	from the runnable pool.
+• Dead state. 
+	A thread can be considered dead when its run()
+	method completes. If any thread comes on this state that
+	means it cannot ever run again.
+• Blocked. 
+	A thread can enter in this state because of waiting
+	the resources that are hold by another thread.
+
+* Deamon Threads
+These threads are running internally to provide services to some other thread and it will be terminated along with the the thread which are taking services
+
+
+************************************************************************
+programmin in thread
+********************
+#low level threading
+#without create class
+from threading import*
+
+def starprint():
+    for r in range(5):
+        print("*",end='')
+for r in range(10):
+        tr=Thread(target=starprint) #born
+        tr.start() #ready
+-----------------------------------------------------------------
+#low level threading
+#without create class
+from threading import*
+
+def starprint(size):
+    for r in range(size):
+        print("*",end='')
+for r in range(10):
+        tr=Thread(target=starprint,args=(10,)) #born
+        tr.start() #ready
+----------------------------------------------------------
+#low level threading
+#without create class
+from threading import*
+from time import*
+def starprint(size,charvar):
+    for r in range(size):
+        print(charvar,end='')
+    print()
+
+for r in range(2):
+        tr1=Thread(target=starprint,args=(10,"*")) #born
+        tr1.start() #ready
+
+        sleep(1)
+        tr2 = Thread(target=starprint, args=(5,"s"))  # born
+        tr2.start()  # ready
+        sleep(1.5)
+----------------------------------------------------------
+#low level threading
+#without create class
+from threading import*
+from time import*
+def starprint(size,charvar):
+    for r in range(size):
+        print(charvar,end='')
+        sleep(1)
+    print()
+
+for r in range(10):
+
+        tr1=Thread(target=starprint,name="starThread",args=(10,"*")) #born
+        tr1.start() #ready
+        print(tr1.getName())
+        tr2 = Thread(target=starprint,name="sushilThread", args=(5,"s"))  # born
+        tr2.start()  # ready
+        print(tr2.getName())
+------------------------------------------------------
+#low level threading
+#without create class
+from threading import*
+from time import*
+class MyThread:
+    def starprint(self,size,charvar):
+        #print(Thread.getName())
+        print(Thread.currentThread())
+        for r in range(size):
+            print(charvar,end='')
+            sleep(1)
+        print()
+
+objr=MyThread()
+for r in range(10):
+        tr1=Thread(target=objr.starprint,name="starThread",args=(10,"*")) #born
+        tr1.start() #ready
+        tr2 = Thread(target=objr.starprint,name="sushilThread", args=(5,"s"))  # born
+        tr2.start()  # ready
+---------------------------------------------------
+
